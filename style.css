@@ -1,0 +1,34 @@
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+header{
+    background-color: dodgerblue;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+#stock-search{
+    padding: 10px;
+    font-weight: bold;
+
+}
+#add-stock-btn{
+    background-color: dodgerblue;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    border: dodgerblue;
+}
+
+table {
+    text-align: center;
+    padding: 10px;
+}
+
+th, td{
+    background-color: rgb(199, 226, 240);
+
+}
+

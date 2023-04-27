@@ -1,0 +1,1 @@
+const FormEl = document.getElementById('stock-search');
