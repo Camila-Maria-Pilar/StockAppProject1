@@ -5,6 +5,7 @@ const favStockList = document.getElementById('favouriteStocks');
 const adviceBtn = document.getElementById('adviceBtn');
 
 
+localStorage.clear();
 
 // 1. Users types a company name in search bar
 // 1.1 and gets the stock company name result from the drop-down list.
