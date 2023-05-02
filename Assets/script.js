@@ -7,6 +7,7 @@ const adviceBtn = document.getElementById('adviceBtn');
 
 localStorage.clear();
 
+
 // 1. Users types a company name in search bar
 // 1.1 and gets the stock company name result from the drop-down list.
 inputStockEl.addEventListener('input', searchStocks);
@@ -119,17 +120,38 @@ function fetchStockData(stockSymbol) {
   
   
     // Offer advice/recommendation to user
-    document.addEventListener.on('click', 'advice');
+    adviceBtn.addEventListener('click', createAdvice);
     
-    function createAdvice(recommendation){
+    function createAdvice(){
+
+        // Get a random number between 0 and 1
         const rand = Math.random();
+
+        // Get the advice div
+        const adviceDiv = document.getElementById('advice');
+
+        // Create a new h3 element
+        const advice = document.createElement('h3');
+
+        // Set the text of the h3 element based on the random number
+
         if (rand < 0.33) {
-        document.createElement = "<h3>Buy!</h3>";
+        advice.textContent = 'BUY!';
         } else if (rand < 0.66) {
-        document.createElement = "<h3>Sell!</h3>";
+        advice.textContent ='SELL!';
         } else {
-        document.createElement = "<h3>Hold!</h3>";
+        advice.textContent = 'HOLD!';
         }
+
+        // Remove any previously displayed advice
+        const previousAdvice = adviceDiv.querySelector('h3');
+        if (previousAdvice){
+            adviceDiv.removeChild(previousAdvice);
+        }
+        // Append the advice to the advice div
+
+        adviceDiv.appendChild(advice);
+
     }
     
   }
