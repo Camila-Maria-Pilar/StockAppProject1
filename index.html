@@ -1,58 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock App</title>
-    <link rel="stylesheet" href="Assets/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-   
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock App</title>
+  <link rel="stylesheet" href="Assets/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
+
 <body>
   <header id="header">
-
-<h1>Welcome to Aussie Stock Watchlist </h1>
-
+    <h1>Welcome to Aussie Stock Watchlist </h1>
   </header>
-
-  <section class="container-fluid"> <div class="row">
-    <div class="col s3 ">
-
+  <section class="container-fluid">
+    <div class="row">
+      <div class="col s3 ">
         <input type="text" placeholder="Search by name of the company:" id="inputStock"></input>
+        <div id="suggestionsDisplay"></div>
         <button id="favouriteButton"> Favourite </button>
-
-    <div>
-        <ul id="favouriteStocks">
-       
-        </ul>
-
-    </div>   
-
+        <div>
+          <ul id="favouriteStocks"></ul>
+        </div>
+      </div>
+      <div class="col s8 displayDiv">
+        <div><button id="adviceBtn" class="hide">Give me my Recommendation</button></div>
+        <div id="advice"></div>
+        <div id="stockSymbolDiv"></div>
+      </div>
     </div>
-    
-    <div class="col s9 ">Info</div>
-
-    <div><button id="adviceBtn">Give me my Recommendation</button></div>
-
-    <div id="advice">Advice here</div>
-    
-     
-  </div>
-    
-
-  </div>
-
-
-
+    </div>
   </section>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="Assets/script.js"></script>
 
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="Assets/script.js"></script>
-            
 </body>
 
 </html>
