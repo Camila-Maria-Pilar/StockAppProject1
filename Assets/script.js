@@ -6,49 +6,85 @@ const adviceBtn = document.getElementById('adviceBtn');
 
 
 
-
 // 1. Users types a company name in search bar
 // 1.1 and gets the stock company name result from the drop-down list.
 inputStockEl.addEventListener('input', searchStocks);
 
 // 2. The user saves the selected stock in the Favourite List with the "Favourite Button"
 document.addEventListener('DOMContentLoaded', function () {
-    let alredyExisFavs = localStorage.getItem("favoritesStored");
-    if (alredyExisFavs) {
-        alredyExisFavs = JSON.parse(alredyExisFavs);
-    } else {
-        alredyExisFavs = [];
+
+    const ul = document.querySelector('ul#favouriteStocks');
+   
+    // function that deletes the share name from favourites list and from local storage
+    function deleteFromFavourites(eleToBeDeleted) {
+        let alredyExisFavs = localStorage.getItem("favoritesStored");
+        if (alredyExisFavs) {
+            alredyExisFavs = JSON.parse(alredyExisFavs);
+        }
+        //get the index of share to be deleted from local storage array and delete it
+        const index = alredyExisFavs.indexOf(eleToBeDeleted);
+        if (index > -1) {
+            alredyExisFavs.splice(index, 1);
+        }
+        $('ul').empty();
+        localStorage.setItem("favoritesStored", JSON.stringify(alredyExisFavs));
+        //displaying fresh list from local storage
+        createListFromLocalSTorage();
     }
 
-    const ul = document.querySelector('ul');
-    for (let i = 0; i < alredyExisFavs.length; i++) {
-        const li = document.createElement('li');
-        li.classList.add('liElement');
-        li.textContent = alredyExisFavs[i];
-        li.addEventListener("click", () => fetchStockData(alredyExisFavs[i])); // Fetch stock data when clicked
-        ul.appendChild(li);
-    }
+    createListFromLocalSTorage();
 
-    document.getElementById('favouriteButton').addEventListener('click', function () {
-        let inputvalueentered = document.getElementById('inputStock').value;
-
+    //Function that is used to create a list of shares into favourites bar from local storage
+    function createListFromLocalSTorage() {
         let alredyExisFavs = localStorage.getItem("favoritesStored");
         if (alredyExisFavs) {
             alredyExisFavs = JSON.parse(alredyExisFavs);
         } else {
             alredyExisFavs = [];
         }
+        for (let i = 0; i < alredyExisFavs.length; i++) {
+            const li = document.createElement('li');
+            li.classList.add('liElement');
+            li.textContent = alredyExisFavs[i];
+           
+           li.addEventListener('click', function(e) {
+               if(e.target.tagName == 'LI') {
+                fetchStockData(alredyExisFavs[i]);
+               }    
+           })
 
-        alredyExisFavs.push(inputvalueentered);
+            //add delete button after each li element
+            let deleteButton = $('<i/>').text('delete_forever').addClass('material-icons delButton');
+           
+           deleteButton.on('click', function(e) {
+            deleteFromFavourites(alredyExisFavs[i]);
+           })
+   
+            deleteButton.appendTo(li);
+            ul.appendChild(li);
+        }
+    }
 
+    //Listener and function that adds share to the favourites list
+    document.getElementById('favouriteButton').addEventListener('click', function () {
+        let inputvalueentered = document.getElementById('inputStock').value;
+        let alredyExisFavs = localStorage.getItem("favoritesStored");
+        if (alredyExisFavs) {
+            alredyExisFavs = JSON.parse(alredyExisFavs);
+        } else {
+            alredyExisFavs = [];
+        }
+        $('ul#favouriteStocks').empty();
+
+        //Checking if its already in Favourites
+        if(alredyExisFavs.indexOf(inputvalueentered) == -1) {
+            alredyExisFavs.push(inputvalueentered);
+        }else{
+            alert('Stock is already in your favourites');
+        }
+   
         localStorage.setItem("favoritesStored", JSON.stringify(alredyExisFavs));
-
-        const li = document.createElement('li');
-        li.classList.add('liElement');
-        li.textContent = inputvalueentered;
-        li.addEventListener("click", () => fetchStockData(inputvalueentered)); // Fetch stock data when clicked
-        ul.appendChild(li);
-
+        createListFromLocalSTorage();
         document.getElementById('inputStock').value = '';
     });
 });
@@ -89,38 +125,94 @@ async function searchStocks(e) {
             suggestionList.appendChild(li);
         });
 
-        inputStockEl.parentElement.appendChild(suggestionList);
+        // inputStockEl.parentElement.appendChild(suggestionList);
+        document.getElementById('suggestionsDisplay').appendChild(suggestionList);
     }
 }
 
 // Function to fetch the stock information when the user clicks on
 // a stock symbol from the Favourite List or search suggestions
 function fetchStockData(stockSymbol) {
-    const apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${stockSymbol}&interval=5min&apikey=${ApiKey}`;
+    $('#adviceBtn').addClass('show').removeClass('hide');
+    const apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${stockSymbol}&interval=60min&apikey=${ApiKey}`;
     fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
-        const timeSeries = data["Time Series (5min)"];
-        const latestDate = Object.keys(timeSeries)[0];
-        const latestData = timeSeries[latestDate];
-        const stockInfoEl = document.querySelector('.col.s9');
-        stockInfoEl.innerHTML = `
-          <h3>${stockSymbol}</h3>
-          <p>Date: ${latestDate}</p>
-          <p>Open: ${latestData["1. open"]}</p>
-          <p>High: ${latestData["2. high"]}</p>
-          <p>Low: ${latestData["3. low"]}</p>
-          <p>Close: ${latestData["4. close"]}</p>
-          <p>Volume: ${latestData["5. volume"]}</p>
-        `;
+          if(data["Time Series (60min)"]) {
+            const timeSeries = data["Time Series (60min)"];
+
+            const stockSymbolDiv = document.querySelector('#stockSymbolDiv');
+           
+            stockSymbolDiv.innerHTML = `
+            <h3>Stock: ${stockSymbol}</h3>
+            <h4>Hourly Analysis</h4>
+            `;
+   
+            var table = document.createElement('table');
+
+            var tr = document.createElement('tr');  
+            var td0 =  document.createElement('td');
+            var td1 = document.createElement('td');
+            var td2 = document.createElement('td');
+            var td3 = document.createElement('td');
+            var td4 = document.createElement('td');
+            var td5 = document.createElement('td');
+
+            td0.appendChild(document.createTextNode('Time'));
+            td1.appendChild(document.createTextNode('Open'));
+            td2.appendChild(document.createTextNode('High'));
+            td3.appendChild(document.createTextNode('Low'));
+            td4.appendChild(document.createTextNode('Close'));
+            td5.appendChild(document.createTextNode('Volume'));
+           
+            tr.appendChild(td0);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            tr.appendChild(td4);
+            tr.appendChild(td5);
+
+            table.appendChild(tr);
+
+            for (var i = 0; i < 10; i++){
+                const latestDate = Object.keys(timeSeries)[i];
+                const latestData = timeSeries[latestDate];  
+                var tr = document.createElement('tr');  
+                var td0 =  document.createElement('td');
+                var td1 = document.createElement('td');
+                var td2 = document.createElement('td');
+                var td3 = document.createElement('td');
+                var td4 = document.createElement('td');
+                var td5 = document.createElement('td');
+                td0.appendChild(document.createTextNode(latestDate));
+                td1.appendChild(document.createTextNode(parseFloat(latestData["1. open"]).toFixed(2)));
+                td2.appendChild(document.createTextNode(parseFloat(latestData["2. high"]).toFixed(2)));
+                td3.appendChild(document.createTextNode(parseFloat(latestData["3. low"]).toFixed(2)));
+                td4.appendChild(document.createTextNode(parseFloat(latestData["4. close"]).toFixed(2)));
+                td5.appendChild(document.createTextNode(parseFloat(latestData["5. volume"]).toFixed(2)));
+                tr.appendChild(td0);
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+                tr.appendChild(td5);
+                table.appendChild(tr);
+            }
+            stockSymbolDiv.appendChild(table);
+           
+          }
+          else{
+              alert("Error occured while calling API. Please visit https://www.alphavantage.co/premium/ if you would like to target a higher API call frequency.");
+          }
+       
       })
       .catch(error => console.log(error));
-  
-  
-  
+ 
+ 
+ 
     // Offer advice/recommendation to user
     adviceBtn.addEventListener('click', createAdvice);
-    
+   
     function createAdvice(){
 
         // Get a random number between 0 and 1
@@ -152,6 +244,5 @@ function fetchStockData(stockSymbol) {
         adviceDiv.appendChild(advice);
 
     }
-    
+   
   }
-  
