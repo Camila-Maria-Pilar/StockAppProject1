@@ -1,8 +1,14 @@
-const ApiKey = "QMC8KQNE4QT6DSGV";
+// First API QMC8KQNE4QT6DSGV"
+//Second API FW5Y3HRYGFE5RA5A
+
+const ApiKey = "FW5Y3HRYGFE5RA5A";
+const ApiKey2 = "FW5Y3HRYGFE5RA5A";
 const inputStockEl = document.getElementById('inputStock');
 const favBtn = document.getElementById('favouriteButton');
 const favStockList = document.getElementById('favouriteStocks');
 const adviceBtn = document.getElementById('adviceBtn');
+const newsDiv = document.getElementById('newsDiv');
+
 
 
 
@@ -98,7 +104,7 @@ async function searchStocks(e) {
         return;
     }
 
-    const response = await fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${searchText}&apikey=${ApiKey}`);
+    const response = await fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${searchText}&apikey=${ApiKey2}`);
     const data = await response.json();
     const suggestions = data.bestMatches;
 
@@ -174,43 +180,40 @@ function fetchStockData(stockSymbol) {
 
             table.appendChild(tr);
 
-            for (var i = 0; i < 10; i++){
-                const latestDate = Object.keys(timeSeries)[i];
-                const latestData = timeSeries[latestDate];  
-                var tr = document.createElement('tr');  
-                var td0 =  document.createElement('td');
-                var td1 = document.createElement('td');
-                var td2 = document.createElement('td');
-                var td3 = document.createElement('td');
-                var td4 = document.createElement('td');
-                var td5 = document.createElement('td');
-                td0.appendChild(document.createTextNode(latestDate));
-                td1.appendChild(document.createTextNode(parseFloat(latestData["1. open"]).toFixed(2)));
-                td2.appendChild(document.createTextNode(parseFloat(latestData["2. high"]).toFixed(2)));
-                td3.appendChild(document.createTextNode(parseFloat(latestData["3. low"]).toFixed(2)));
-                td4.appendChild(document.createTextNode(parseFloat(latestData["4. close"]).toFixed(2)));
-                td5.appendChild(document.createTextNode(parseFloat(latestData["5. volume"]).toFixed(2)));
-                tr.appendChild(td0);
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-                tr.appendChild(td3);
-                tr.appendChild(td4);
-                tr.appendChild(td5);
-                table.appendChild(tr);
-            }
+            const latestDate = Object.keys(timeSeries)[0];
+            const latestData = timeSeries[latestDate];  
+            var tr = document.createElement('tr');  
+            var td0 =  document.createElement('td');
+            var td1 = document.createElement('td');
+            var td2 = document.createElement('td');
+            var td3 = document.createElement('td');
+            var td4 = document.createElement('td');
+            var td5 = document.createElement('td');
+            td0.appendChild(document.createTextNode(latestDate));
+            td1.appendChild(document.createTextNode(parseFloat(latestData["1. open"]).toFixed(2)));
+            td2.appendChild(document.createTextNode(parseFloat(latestData["2. high"]).toFixed(2)));
+            td3.appendChild(document.createTextNode(parseFloat(latestData["3. low"]).toFixed(2)));
+            td4.appendChild(document.createTextNode(parseFloat(latestData["4. close"]).toFixed(2)));
+            td5.appendChild(document.createTextNode(parseFloat(latestData["5. volume"]).toFixed(2)));
+            tr.appendChild(td0);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            tr.appendChild(td4);
+            tr.appendChild(td5);
+            table.appendChild(tr);
+            
             stockSymbolDiv.appendChild(table);
-           
+
+            // Fetch news data after fetching the stock data
+            fetchNewsAndSentiment(stockSymbol);
           }
-          else{
-              alert("Error occured while calling API. Please visit https://www.alphavantage.co/premium/ if you would like to target a higher API call frequency.");
-          }
-       
+          
       })
       .catch(error => console.log(error));
- 
- 
- 
-    // Offer advice/recommendation to user
+}
+
+     // Offer advice/recommendation to user
     adviceBtn.addEventListener('click', createAdvice);
    
     function createAdvice(){
@@ -245,4 +248,64 @@ function fetchStockData(stockSymbol) {
 
     }
    
-  }
+function fetchNewsAndSentiment(stockSymbol) {
+    const apiUrl = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${stockSymbol}&apikey=${ApiKey}`;
+
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const newsDiv = document.querySelector('#newsDiv');
+            newsDiv.innerHTML = '';  // Clear out the current news
+
+            if (!data.feed || data.feed.length === 0) {
+                console.log('No News found');
+                return;
+            }
+
+            const newsItem = data.feed[0]; // Get the first news item
+
+            const newsElement = document.createElement('div');
+            newsElement.classList.add('news-item'); // Add class for styling
+
+            const headlineElement = document.createElement('h3');
+            headlineElement.textContent = newsItem.title;
+            newsElement.appendChild(headlineElement);
+
+            const timePublishedElement = document.createElement('p');
+            timePublishedElement.textContent = `Time Published: ${newsItem.time_published}`;
+            newsElement.appendChild(timePublishedElement);
+
+            const authorsElement = document.createElement('p');
+            authorsElement.textContent = `Authors: ${newsItem.authors.join(', ')}`;
+            newsElement.appendChild(authorsElement);
+
+            if (newsItem.banner_image) {
+                const imageElement = document.createElement('img');
+                imageElement.src = newsItem.banner_image;
+                imageElement.alt = newsItem.title;
+                imageElement.style.maxWidth = '200px'; // Limit image size
+                imageElement.style.maxHeight = '200px'; // Limit image size
+                newsElement.appendChild(imageElement);
+            }
+
+            const summaryElement = document.createElement('p');
+            summaryElement.textContent = `Summary: ${newsItem.summary}`;
+            newsElement.appendChild(summaryElement);
+
+            const urlElement = document.createElement('a');
+            urlElement.href = newsItem.url;
+            urlElement.target = '_blank'; // Open in a new tab
+            urlElement.textContent = 'Read More';
+            newsElement.appendChild(urlElement);
+
+                        const sourceElement = document.createElement('p');
+            sourceElement.textContent = `Source: ${newsItem.source}`;
+            newsElement.appendChild(sourceElement);
+
+            newsDiv.appendChild(newsElement);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
+
