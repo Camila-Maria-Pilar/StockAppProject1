@@ -1,0 +1,81 @@
+#header {
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 3%;
+    }
+    
+    #favouriteButton {
+    background-color: rgba(2, 0, 36, 0.642);
+    color: aliceblue;
+    padding: 2%;
+    width: 70%;
+    border-radius: 5px;
+    }
+    
+    .liElement {
+    background-color: rgba(2, 0, 36, 0.642);
+    color: aliceblue;
+    padding: 2%;
+    width: 80%;
+    border-radius: 5px;
+    text-align: center;
+    margin: 1%;
+    cursor: pointer;
+    }
+    
+    .delButton {
+    float: right;
+    }
+    
+    .displayDiv {
+    margin: 1%;
+    }
+    .bgcoloradd {
+    background-color: aliceblue;
+    padding: 1%;
+    }
+    
+    #adviceBtn {
+    float: left;
+    margin-right: 2%;
+    margin-top: 2%;
+    background-color: cornflowerblue;
+    font-weight: bold;
+    color: white;
+    padding: 1%;
+    border-radius: 10px;
+    cursor: pointer;
+    }
+    
+    .hide {
+    display: none;
+    }
+    
+    .show {
+    display: block;
+    }
+    
+    #advice {
+    color: cornflowerblua;
+    float: right;
+    margin-right: 2%;
+    }
+    #newsDiv {
+    background-color:aliceblue;
+    padding: 3%;
+    margin: 2%;
+    }
+    table {
+        table-layout: fixed;
+        width: 100%;   
+    }
+    th,td {
+        word-wrap: break-word;
+    }
+    @media only screen and (max-width: 700px) {
+        #advice {
+          float: left;
+        }
+      }
