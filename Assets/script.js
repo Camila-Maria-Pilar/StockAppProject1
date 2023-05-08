@@ -145,7 +145,7 @@ const timeSeries = data["Time Series (60min)"];
 const stockSymbolDiv = document.querySelector('#stockSymbolDiv');
 const analysisData = document.querySelector('#analysisData');
 stockSymbolDiv.innerHTML = `
-<h4>Stock: ${stockSymbol}</h4>
+<h3>Stock: ${stockSymbol}</h3>
 <h5>Hourly Analysis</h5>
 `;
 // create table that displays stock data
@@ -184,7 +184,7 @@ var td3 = document.createElement('td');
 var td4 = document.createElement('td');
 var td5 = document.createElement('td');
 td0.appendChild(document.createTextNode(latestDate));
-td1.appendChild(document.createTextNode(parseFloat(latestData["1. open"]).toFixed(2)));
+td1.appendChild(document.createTextNode(parseFloat(latestData["1. open"]).toFixed(2))); 
 td2.appendChild(document.createTextNode(parseFloat(latestData["2. high"]).toFixed(2)));
 td3.appendChild(document.createTextNode(parseFloat(latestData["3. low"]).toFixed(2)));
 td4.appendChild(document.createTextNode(parseFloat(latestData["4. close"]).toFixed(2)));
@@ -205,9 +205,12 @@ fetchNewsAndSentiment(stockSymbol);
 .catch(error => console.log(error));
 }
 
+     
+
 // Offer advice/recommendation to user
-adviceBtn.addEventListener('click', createAdvice);
-function createAdvice(){
+    adviceBtn.addEventListener('click', createAdvice);
+   
+    function createAdvice(){
 
 // Get a random number between 0 and 1
 const rand = Math.random();
@@ -223,12 +226,15 @@ const advice = document.createElement('h3');
 if (rand < 0.33) {
 advice.textContent = 'BUY!';
 advice.style.color = 'green';
+advice.style.fontWeight = 'bold'
 } else if (rand < 0.66) {
 advice.textContent ='SELL!';
 advice.style.color = 'red';
+advice.style.fontWeight = 'bold'
 } else {
 advice.textContent = 'HOLD!';
 advice.style.color = 'blue';
+advice.style.fontWeight = 'bold'
 }
 
 // Remove any previously displayed advice
@@ -241,6 +247,10 @@ adviceDiv.removeChild(previousAdvice);
 adviceDiv.appendChild(advice);
 
 }
+
+
+// News & sentiments Div
+
 function fetchNewsAndSentiment(stockSymbol) {
 const apiUrl = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${stockSymbol}&apikey=${ApiKey}`;
 
@@ -262,18 +272,33 @@ newsElement.classList.add('news-item'); // Add class for styling
 
 $('#newsDiv').addClass('show').removeClass('hide');
 
-const headlineElementHeader = document.createElement('h4');
+const headlineElementHeader = document.createElement('h5');
 headlineElementHeader.textContent = "Trending News";
 newsElement.appendChild(headlineElementHeader);
 
 
-const headlineElement = document.createElement('h5');
+const headlineElement = document.createElement('h3');
 headlineElement.textContent = newsItem.title;
 newsElement.appendChild(headlineElement);
 
 const timePublishedElement = document.createElement('p');
-timePublishedElement.textContent = `Time Published: ${newsItem.time_published}`;
+
+// Parse the date string from the API
+const date = new Date(
+  parseInt(newsItem.time_published.slice(0, 4)),
+  parseInt(newsItem.time_published.slice(4, 6)) - 1,
+  parseInt(newsItem.time_published.slice(6, 8)),
+  parseInt(newsItem.time_published.slice(9, 11)),
+  parseInt(newsItem.time_published.slice(11, 13)),
+  parseInt(newsItem.time_published.slice(13, 15))
+);
+
+// Format the date as "dd/mm/yyyy"
+const formattedDate = `${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
+
+timePublishedElement.textContent = `Time Published: ${formattedDate}`;
 newsElement.appendChild(timePublishedElement);
+
 
 const authorsElement = document.createElement('p');
 authorsElement.textContent = `Authors: ${newsItem.authors.join(', ')}`;
@@ -283,8 +308,8 @@ if (newsItem.banner_image) {
 const imageElement = document.createElement('img');
 imageElement.src = newsItem.banner_image;
 imageElement.alt = newsItem.title;
-imageElement.style.maxWidth = '200px'; // Limit image size
-imageElement.style.maxHeight = '200px'; // Limit image size
+imageElement.style.maxWidth = '400px'; // Limit image size
+imageElement.style.maxHeight = '400px'; // Limit image size
 newsElement.appendChild(imageElement);
 }
 
@@ -296,6 +321,7 @@ const urlElement = document.createElement('a');
 urlElement.href = newsItem.url;
 urlElement.target = '_blank'; // Open in a new tab
 urlElement.textContent = 'Read More';
+urlElement.style.fontWeight = 'bold';
 newsElement.appendChild(urlElement);
 
 const sourceElement = document.createElement('p');
