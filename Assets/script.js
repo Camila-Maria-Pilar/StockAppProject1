@@ -213,7 +213,9 @@ function fetchStockData(stockSymbol) {
       .catch(error => console.log(error));
 }
 
-     // Offer advice/recommendation to user
+     
+
+// Offer advice/recommendation to user
     adviceBtn.addEventListener('click', createAdvice);
    
     function createAdvice(){
@@ -247,6 +249,9 @@ function fetchStockData(stockSymbol) {
         adviceDiv.appendChild(advice);
 
     }
+
+    // Reset recommendation message when the user changes the stock symbol ----PENDING
+
    
 function fetchNewsAndSentiment(stockSymbol) {
     const apiUrl = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${stockSymbol}&apikey=${ApiKey}`;
