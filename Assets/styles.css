@@ -4,17 +4,17 @@
     font-weight: bold;
     text-align: center;
     padding: 3%;
-}
-
-#favouriteButton {
+    }
+    
+    #favouriteButton {
     background-color: rgba(2, 0, 36, 0.642);
     color: aliceblue;
     padding: 2%;
     width: 70%;
     border-radius: 5px;
-}
-
-.liElement {
+    }
+    
+    .liElement {
     background-color: rgba(2, 0, 36, 0.642);
     color: aliceblue;
     padding: 2%;
@@ -22,22 +22,23 @@
     border-radius: 5px;
     text-align: center;
     margin: 1%;
-
     cursor: pointer;
-
-}
-
-.delButton {
+    }
+    
+    .delButton {
     float: right;
-}
-
-.displayDiv {
-    background-color: aliceblue;
+    }
+    
+    .displayDiv {
     margin: 1%;
-}
-
-#adviceBtn {
-    float: right;
+    }
+    .bgcoloradd {
+    background-color: aliceblue;
+    padding: 1%;
+    }
+    
+    #adviceBtn {
+    float: left;
     margin-right: 2%;
     margin-top: 2%;
     background-color: cornflowerblue;
@@ -46,16 +47,23 @@
     padding: 1%;
     border-radius: 10px;
     cursor: pointer;
-}
-
-.hide {
+    }
+    
+    .hide {
     display: none;
-}
-
-.show {
+    }
+    
+    .show {
     display: block;
-}
-
-#advice {
+    }
+    
+    #advice {
     color: cornflowerblue;
-}
+    float: right;
+    margin-right: 2%;
+    }
+    #newsDiv {
+    background-color: #66ff0030;
+    padding: 1%;
+    margin: 1%;
+    }
