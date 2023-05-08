@@ -1,58 +1,61 @@
+index.html
+MG <shetty.manasa0@gmail.com>
+You
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock App</title>
-    <link rel="stylesheet" href="Assets/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-   
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock App</title>
+<link rel="stylesheet" href="Assets/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
+
 <body>
-  <header id="header">
-
+<!-- Header Div to display heading text -->
+<header id="header">
 <h1>Welcome to Aussie Stock Watchlist </h1>
+</header>
 
-  </header>
-
-  <section class="container-fluid"> <div class="row">
-    <div class="col s3 ">
-
-        <input type="text" placeholder="Search by name of the company:" id="inputStock"></input>
-        <button id="favouriteButton"> Favourite </button>
-
-    <div>
-        <ul id="favouriteStocks">
-       
-        </ul>
-
-    </div>   
-
-    </div>
-    
-    <div class="col s9 ">Info</div>
-
-    <div><button id="adviceBtn">Give me my Recommendation</button></div>
-
-    <div id="advice">Advice here</div>
-    
-     
-  </div>
-    
-
-  </div>
-
-
-
-  </section>
-
-
+<section class="container-fluid">
+<div class="row">
+<!-- section that is to search and select stocks -->
+<div class="col s12 m3 l3 ">
+<!-- input button that is to search for the stock -->
+<input type="text" placeholder="Search by name of the company:" id="inputStock"></input>
+<!-- div to display suggestions based on the input provided -->
+<div id="suggestionsDisplay"></div>
+<button id="favouriteButton"> Favourite </button>
+<!-- ul list that displays favourite stocks -->
+<div>
+<ul id="favouriteStocks"></ul>
+</div>
+</div>
+<!-- section that is to display stocks data and trending news -->
+<div class="col s12 m8 l8 displayDiv">
+<div class="bgcoloradd">
+<div id="stockSymbolDiv"></div>
+<!-- recommendation button on click displays advice text -->
+<div><button id="adviceBtn" class="hide">Advise Me!</button></div>
+<!-- Advice div to display advice -->
+<div id="advice"></div>
+<!-- Div that displays stock data -->
+<div id="analysisData"></div>
+</div>
+<!-- Div that displays trending news -->
+<div id="newsDiv" class="hide"></div>
+</div>
+</div>
+</section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="Assets/script.js"></script>
-            
+
 </body>
 
 </html>
