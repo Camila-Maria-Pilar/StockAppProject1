@@ -58,12 +58,24 @@
     }
     
     #advice {
-    color: cornflowerblue;
+    color: cornflowerblua;
     float: right;
     margin-right: 2%;
     }
     #newsDiv {
-    background-color: #66ff0030;
-    padding: 1%;
-    margin: 1%;
+    background-color:aliceblue;
+    padding: 3%;
+    margin: 2%;
     }
+    table {
+        table-layout: fixed;
+        width: 100%;   
+    }
+    th,td {
+        word-wrap: break-word;
+    }
+    @media only screen and (max-width: 700px) {
+        #advice {
+          float: left;
+        }
+      }
